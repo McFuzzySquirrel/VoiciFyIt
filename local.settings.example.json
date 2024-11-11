@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=<YourAccountName>;AccountKey=<YourAccountKey>;EndpointSuffix=core.windows.net",
+    "AZURE_SPEECH_KEY": "<YourAzureSpeechKey>",
+    "AZURE_SERVICE_REGION": "<YourAzureServiceRegion>"
+  }
+}
