@@ -24,9 +24,28 @@ The `ProcessSSML` Azure Function is designed to process Speech Synthesis Markup 
 
 ### Environment Variables
 
-The following environment variables must be set in the Azure Function App settings:
+The following environment variables must be set in the Azure Function App settings. You can use the `local.settings.example.json` file as a template.
 
-- `AZURE_STORAGE_CONNECTION_STRING`: Connection string for the Azure Blob Storage account.
-- `AZURE_SPEECH_KEY`: Subscription key for the Azure Cognitive Services Speech service.
-- `AZURE_SERVICE_REGION`: Region for the Azure Cognitive Services Speech service.
+1. **AzureWebJobsStorage**: Connection string for the Azure Storage account used by the function app.
+2. **FUNCTIONS_WORKER_RUNTIME**: The runtime stack for the function app (e.g., `python`).
+3. **AZURE_STORAGE_CONNECTION_STRING**: Connection string for the Azure Blob Storage account.
+4. **AZURE_SPEECH_KEY**: Subscription key for the Azure Cognitive Services Speech service.
+5. **AZURE_SERVICE_REGION**: Region for the Azure Cognitive Services Speech service.
+
+### Example `local.settings.json`
+
+Copy the `local.settings.example.json` file to `local.settings.json` and replace the placeholders with your actual values.
+
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=<YourAccountName>;AccountKey=<YourAccountKey>;EndpointSuffix=core.windows.net",
+    "AZURE_SPEECH_KEY": "<YourAzureSpeechKey>",
+    "AZURE_SERVICE_REGION": "<YourAzureServiceRegion>"
+  }
+}
+
 
