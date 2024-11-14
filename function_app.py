@@ -135,11 +135,12 @@ def ProcessSSML(req: func.HttpRequest) -> func.HttpResponse:
 
         # Return the response
         response = func.HttpResponse(
-            json.dumps({"message": f"Audio file saved as {mp3_file_name}"}),
+            # json.dumps({"message": f"Audio file saved as {mp3_file_name}"}),
             status_code=200,
             mimetype="application/json"
         )
         logging.info(f"Returning HTTP response with status code: {response.status_code}")
+        return response
 
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
@@ -154,4 +155,4 @@ def ProcessSSML(req: func.HttpRequest) -> func.HttpResponse:
         if os.path.exists(temp_mp3_file_name):
             os.remove(temp_mp3_file_name)
 
-    return response
+    
