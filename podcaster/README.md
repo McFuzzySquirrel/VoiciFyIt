@@ -1,3 +1,21 @@
+# Podcaster
+
+Podcaster is a React application that allows users to upload documents, process them using Azure AI Document Intelligence, and edit the extracted content in a rich text editor.
+
+## Features
+
+- Upload documents (e.g., PDF)
+- Process documents using Azure AI Document Intelligence
+- Display and edit extracted content in a rich text editor
+
+## Prerequisites
+
+- Node.js and npm installed
+- Azure account with access to Azure Static Web Apps and Azure Functions
+- Azure AI Document Intelligence service
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
