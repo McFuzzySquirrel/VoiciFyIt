@@ -1,6 +1,7 @@
 import azure.functions as func
 import logging
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings
+from azure.storage.queue import QueueServiceClient, QueueClient, TextBase64EncodePolicy, TextBase64DecodePolicy
 import azure.cognitiveservices.speech as speechsdk
 import os
 import json
@@ -14,6 +15,10 @@ BLOB_CONTAINER_NAME = os.getenv("BLOB_CONTAINER_NAME", "default-container-name")
 AZURE_STORAGE_CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
 SPEECH_KEY = os.getenv("SPEECH_KEY")
 SPEECH_REGION = os.getenv("SPEECH_REGION")
+
+# Define the input and output queue names
+INPUT_QUEUE_NAME = os.getenv("INPUT_QUEUE_NAME", "input-queue")
+OUTPUT_QUEUE_NAME = os.getenv("OUTPUT_QUEUE_NAME", "output-queue")
 
 def clean_ssml_content(ssml_content):
     # Escape special characters and remove newlines within the text content between the tags
@@ -65,35 +70,26 @@ def send_to_speech_service(ssml_content, mp3_file_name):
         # Check if the file already exists
         if blob_client.exists():
             logging.info(f"File {mp3_file_name} already exists in Blob Storage. Skipping upload.")
-            return func.HttpResponse(
-                json.dumps({"status": "exists", "message": f"Audio file {mp3_file_name} already exists in Blob Storage."}),
-                status_code=200,
-                mimetype="application/json"
-            )
         else:
+            # Upload the file to Blob Storage
             with open(temp_audio_file_path, "rb") as audio_file:
                 blob_client.upload_blob(audio_file, overwrite=True, content_settings=ContentSettings(content_type="audio/mpeg"))
             logging.info(f"File {mp3_file_name} uploaded to Blob Storage.")
 
-        # Return the response
-        response = func.HttpResponse(
-            json.dumps({"status": "success", "message": f"Audio file saved as {mp3_file_name}"}),
-            status_code=200,
-            mimetype="application/json"
-        )
-        logging.info(f"Returning HTTP response with status code: {response.status_code}")
-        return response
+        return json.dumps({"status": "success", "mp3_file_name": mp3_file_name})
 
     finally:
         # Clean up the temporary file
         os.remove(temp_audio_file_path)
 
-@app.route(route="ProcessSSML", auth_level=func.AuthLevel.ANONYMOUS)
-def ProcessSSML(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
+@app.function_name(name="QueueTriggerFunction")
+@app.queue_trigger(arg_name="msg", queue_name=INPUT_QUEUE_NAME, connection="AzureWebJobsStorage")
+def queue_trigger_function(msg: func.QueueMessage):
+    logging.info(f"Received message: {msg.get_body().decode('utf-8')}")
 
     try:
-        req_body = req.get_json()
+        message_content = msg.get_body().decode('utf-8')
+        req_body = message_content.get_json()
         logging.info(f"Request body: {req_body}")
 
         ssml_content = req_body.get('ssml_content')
@@ -102,25 +98,22 @@ def ProcessSSML(req: func.HttpRequest) -> func.HttpResponse:
 
         if not ssml_content or not ssml_file_name or not mp3_file_name:
             logging.error("ssml_content, ssml_file_name, or mp3_file_name is missing")
-            return func.HttpResponse(
-                json.dumps({"status": "error", "message": "Please provide ssml_content, ssml_file_name, and mp3_file_name in the request body"}),
-                status_code=400,
-                mimetype="application/json"
-            )
+            raise Exception("Please provide ssml_content, ssml_file_name, and mp3_file_name in the request body")
 
         # Clean up the SSML content
         cleaned_ssml_content = clean_ssml_content(ssml_content)
         logging.info(f"Cleaned SSML content: {cleaned_ssml_content}")
 
         # Send the cleaned SSML content to the speech services for conversion
-        response = send_to_speech_service(cleaned_ssml_content, mp3_file_name)
+        response_message = send_to_speech_service(cleaned_ssml_content, mp3_file_name)
 
-        return response
+        # Send a message to the output queue
+        queue_service_client = QueueServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
+        output_queue_client = queue_service_client.get_queue_client(OUTPUT_QUEUE_NAME)
+
+        output_queue_client.send_message(response_message)
+        logging.info("Response message sent to output queue.")
 
     except Exception as e:
         logging.error(f"Exception: {str(e)}")
-        return func.HttpResponse(
-            json.dumps({"status": "error", "message": str(e)}),
-            status_code=500,
-            mimetype="application/json"
-        )
+        raise e
