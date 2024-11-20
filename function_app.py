@@ -95,6 +95,8 @@ def queue_trigger_function(msg: func.QueueMessage):
         ssml_content = req_body.get('ssml_content')
         ssml_file_name = req_body.get('ssml_file_name')
         mp3_file_name = req_body.get('mp3_file_name')
+        title = req_body.get('title')
+        description = req_body.get('description')
 
         if not ssml_content or not ssml_file_name or not mp3_file_name:
             logging.error("ssml_content, ssml_file_name, or mp3_file_name is missing")
@@ -106,6 +108,11 @@ def queue_trigger_function(msg: func.QueueMessage):
 
         # Send the cleaned SSML content to the speech services for conversion
         response_message = send_to_speech_service(cleaned_ssml_content, mp3_file_name)
+
+        # add title and description to the response message
+        response_message = json.loads(response_message)
+        response_message["title"] = title
+        response_message["description"] = description
 
         # Send a message to the output queue
         queue_service_client = QueueServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
