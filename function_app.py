@@ -76,7 +76,7 @@ def send_to_speech_service(ssml_content, mp3_file_name):
                 blob_client.upload_blob(audio_file, overwrite=True, content_settings=ContentSettings(content_type="audio/mpeg"))
             logging.info(f"File {mp3_file_name} uploaded to Blob Storage.")
 
-        return json.dumps({"status": "success", "mp3_file_name": mp3_file_name})
+        return json.dumps({"status": "success", "mp3_file_name": mp3_file_name, "title": "", "description": ""})
 
     finally:
         # Clean up the temporary file
@@ -89,7 +89,7 @@ def queue_trigger_function(msg: func.QueueMessage):
 
     try:
         message_content = msg.get_body().decode('utf-8')
-        req_body = message_content.get_json()
+        req_body = json.loads(message_content)
         logging.info(f"Request body: {req_body}")
 
         ssml_content = req_body.get('ssml_content')
@@ -117,3 +117,4 @@ def queue_trigger_function(msg: func.QueueMessage):
     except Exception as e:
         logging.error(f"Exception: {str(e)}")
         raise e
+

@@ -4,4 +4,6 @@
 
 azure-functions
 azure-storage-blob
+azure-storage-queue
 azure-cognitiveservices-speech
+requests
