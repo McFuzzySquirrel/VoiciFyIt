@@ -2,7 +2,7 @@
 
 This Azure Function App converts a podscript (written in SSML - Speech Synthesis Markup Language) into a high-quality audio podcast in MP3 format. It leverages Azure Cognitive Services for speech synthesis and Azure Storage for handling input and output queues and storing the generated audio files. This function can be used by any application or system that sends a well-formed SSML to the relevant `input-queue`
 
-For the Power Platform based front-end, please see README.MD in the "Power Platform Bits" directory
+For the Power Platform based front-end, please see [README.MD](https://github.com/McFuzzySquirrel/podcaster_function/blob/all_in_one/Power%20Platform%20Bits/readme.md) in the "Power Platform Bits" directory
 
 ## How It Works
 
@@ -37,19 +37,19 @@ Ensure you have the following settings in your `local.settings.json` file:
 ### Environment Variables
 Ensure that your Function App in Azure has the following envrionment variables set:
 
-**AzureWebJobsStorage**: Connection string for Azure Storage.
-**FUNCTIONS_WORKER_RUNTIME**: Runtime for Azure Functions (set to python).
-**AZURE_STORAGE_CONNECTION_STRING**: Connection string for Azure Storage.
-**BLOB_CONTAINER_NAME**: Name of the Azure Blob Storage container where MP3 files will be stored.
-**SPEECH_KEY**: Subscription key for Azure Cognitive Services Speech API.
-**SPEECH_REGION**: Region for Azure Cognitive Services Speech API.
-**INPUT_QUEUE_NAME**: The name you have given for Azure Storage Queue Name recieving content from external sources
-**OUTPUT_QUEUE_NAME**: The name you have given for Azure Storage Queue Name recieving content from the Funtion App
+- **AzureWebJobsStorage**: Connection string for Azure Storage.
+- **FUNCTIONS_WORKER_RUNTIME**: Runtime for Azure Functions (set to python).
+- **AZURE_STORAGE_CONNECTION_STRING**: Connection string for Azure Storage.
+- **BLOB_CONTAINER_NAME**: Name of the Azure Blob Storage container where MP3 files will be stored.
+- **SPEECH_KEY**: Subscription key for Azure Cognitive Services Speech API.
+- **SPEECH_REGION**: Region for Azure Cognitive Services Speech API.
+- **INPUT_QUEUE_NAME**: The name you have given for Azure Storage Queue Name recieving content from external sources
+- **OUTPUT_QUEUE_NAME**: The name you have given for Azure Storage Queue Name recieving content from the Funtion App
 
 ### Permissions
 
-**Storage Account**: The Function App's Managed Identity should have "Blob Storage Data Contributer" role to the relevant Azure Storgae Account
-**Speech Services**: The Function App's Managed Identiry should have "Cognitive Services Contributor" role to the relevant Azure Speech Services
+- **Storage Account**: The Function App's Managed Identity should have "Blob Storage Data Contributer" role to the relevant Azure Storgae Account
+- **Speech Services**: The Function App's Managed Identiry should have "Cognitive Services Contributor" role to the relevant Azure Speech Services
 
 # Conclusion
 This function app automates the process of converting a podscript into a high-quality audio podcast. It integrates with Azure Cognitive Services for speech synthesis and Azure Storage for handling input and output queues and storing the generated audio files. This setup allows for seamless integration with other systems, such as Power Platform, to create a robust and scalable podcast generation workflow.
