@@ -1,42 +1,21 @@
-# Azure Function: ProcessSSML
+# Azure Function for Podscript to Podcast Conversion
 
-## Overview
+This Azure Function App converts a podscript (written in SSML - Speech Synthesis Markup Language) into a high-quality audio podcast in MP3 format. It leverages Azure Cognitive Services for speech synthesis and Azure Storage for handling input and output queues and storing the generated audio files. This function can be used by any application or system that sends a well-formed SSML to the relevant `input-queue`
 
-The `ProcessSSML` Azure Function is designed to process Speech Synthesis Markup Language (SSML) content, convert it into speech using the Azure Cognitive Services Speech SDK, and upload the resulting MP3 audio file to Azure Blob Storage. The function is triggered via an HTTP POST request and returns a response indicating the success of the operation.
+For the Power Platform based front-end, please see [README.MD](https://github.com/McFuzzySquirrel/podcaster_function/blob/all_in_one/Power%20Platform%20Bits/readme.md) in the "Power Platform Bits" directory
 
-## Functionality
+## How It Works
 
-1. **HTTP Trigger**: The function is triggered via an HTTP POST request. The request body should contain the SSML content, the name of the SSML file, and the name of the MP3 file to be created.
-2. **SSML Content Cleaning**: Cleans the SSML content to escape special characters and remove newlines within the text content between the tags.
-3. **Blob Storage Initialization**: Initializes the Azure Blob Storage client using the connection string and container name provided in the environment variables.
-4. **Upload SSML Content**: Uploads the cleaned SSML content to Azure Blob Storage.
-5. **Wait for File Creation**: Waits for the SSML file to be created in Blob Storage.
-6. **Download SSML Content**: Downloads the SSML content from Blob Storage.
-7. **Speech Synthesis**: he function initializes the Azure Cognitive Services Speech client using the subscription key and region provided in the environment variables. It then synthesizes the SSML content to an MP3 file.
-8. **Upload MP3 File**: he resulting MP3 file is uploaded to Azure Blob Storage using chunked upload with increased concurrency to speed up the process
-9. **Response**: The function returns an HTTP response indicating that the audio file has been saved.
-
-## Prerequisites
-
-- Azure Function App
-- Azure Blob Storage
-- Azure Cognitive Services Speech SDK
-- Python 3.6 or later
+1. **Trigger**: The function is triggered by messages added to an Azure Storage Queue (`input-queue`).
+2. **Message Processing**: The function processes the incoming message, which contains the SSML content and metadata (such as file names, title, and description). "title" and "description" are placeholder to be updated after message has been processed from the `output queue`
+3. **SSML Content Cleaning**: The function cleans and sanitizes the SSML content to ensure it is well-formed.
+4. **Speech Synthesis**: The cleaned SSML content is sent to Azure Cognitive Services for speech synthesis, converting it into an MP3 file.
+5. **Audio File Upload**: The generated MP3 file is uploaded to Azure Blob Storage.
+6. **Output Queue Message**: A message containing the status, MP3 file name, title (placeholder), and description (placeholder)is sent to an output queue (`output-queue`) for further processing or notifications.
 
 ## Configuration
 
-### Environment Variables
-
-The following environment variables must be set in the Azure Function App settings. You can use the `local.settings.example.json` file as a template.
-
-1. **AzureWebJobsStorage**: Connection string for the Azure Storage account used by the function app.
-2. **FUNCTIONS_WORKER_RUNTIME**: The runtime stack for the function app (e.g., `python`).
-3. **AZURE_STORAGE_CONNECTION_STRING**: Connection string for the Azure Blob Storage account.
-4. **BLOB_CONTAINER_NAME**: Name of the Blob Storage container.
-5. **SPEECH_KEY**: Azure Cognitive Services Speech API key.
-6. **SPEECH_REGION**: Azure Cognitive Services Speech API region.
-
-### Example `local.settings.json`
+Ensure you have the following settings in your `local.settings.json` file:
 
 ```json
 {
@@ -47,6 +26,30 @@ The following environment variables must be set in the Azure Function App settin
     "AZURE_STORAGE_CONNECTION_STRING": "your-azure-storage-connection-string",
     "BLOB_CONTAINER_NAME": "your-container-name",
     "SPEECH_KEY": "your-speech-key",
-    "SPEECH_REGION": "your-speech-region"
+    "SPEECH_REGION": "your-speech-region",
+    "INPUT_QUEUE_NAME": "your input storage queue name",
+    "OUTPUT_QUEUE_NAME": "your output azure storage queue name"
   }
 }
+```
+## Function App Settings
+
+### Environment Variables
+Ensure that your Function App in Azure has the following envrionment variables set:
+
+- **AzureWebJobsStorage**: Connection string for Azure Storage.
+- **FUNCTIONS_WORKER_RUNTIME**: Runtime for Azure Functions (set to python).
+- **AZURE_STORAGE_CONNECTION_STRING**: Connection string for Azure Storage.
+- **BLOB_CONTAINER_NAME**: Name of the Azure Blob Storage container where MP3 files will be stored.
+- **SPEECH_KEY**: Subscription key for Azure Cognitive Services Speech API.
+- **SPEECH_REGION**: Region for Azure Cognitive Services Speech API.
+- **INPUT_QUEUE_NAME**: The name you have given for Azure Storage Queue Name recieving content from external sources
+- **OUTPUT_QUEUE_NAME**: The name you have given for Azure Storage Queue Name recieving content from the Funtion App
+
+### Permissions
+
+- **Storage Account**: The Function App's Managed Identity should have "Blob Storage Data Contributer" role to the relevant Azure Storgae Account
+- **Speech Services**: The Function App's Managed Identiry should have "Cognitive Services Contributor" role to the relevant Azure Speech Services
+
+# Conclusion
+This function app automates the process of converting a podscript into a high-quality audio podcast. It integrates with Azure Cognitive Services for speech synthesis and Azure Storage for handling input and output queues and storing the generated audio files. This setup allows for seamless integration with other systems, such as Power Platform, to create a robust and scalable podcast generation workflow.
