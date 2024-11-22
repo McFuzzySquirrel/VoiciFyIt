@@ -1,0 +1,34 @@
+{
+  "iacTypes": [
+    "bicep"
+  ],
+  "resources": [
+    {
+      "type": "azurecontainerapp",
+      "instances": [
+        {
+          "name": "app0"
+        }
+      ]
+    },
+    {
+      "type": "azureopenai",
+      "instances": [
+        {
+          "name": "ai0"
+        }
+      ]
+    }
+  ],
+  "bindings": [
+    {
+      "source": "${azurecontainerapp.app0}",
+      "target": "${azureopenai.ai0}",
+      "connection": "system-identity",
+      "store": "",
+      "customKeys": {}
+    }
+  ],
+  "services": [],
+  "settings": []
+}
