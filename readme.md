@@ -2,9 +2,9 @@
 
 This Azure Function App converts a podscript (written in SSML - Speech Synthesis Markup Language) into a high-quality audio podcast in MP3 format. It leverages Azure Cognitive Services for speech synthesis and Azure Storage for handling input and output queues and storing the generated audio files. This function can be used by any application or system that sends a well-formed SSML to the relevant `input-queue`
 
-For the Power Platform based front-end, please see [README.MD](https://github.com/McFuzzySquirrel/podcaster_function/blob/all_in_one/Power%20Platform%20Bits/readme.md) in the "Power Platform Bits" directory
+For the **Power Platform based front-end**, please see [README.MD](https://github.com/McFuzzySquirrel/podcaster_function/blob/all_in_one/Power%20Platform%20Bits/readme.md) in the "Power Platform Bits" directory
 
-**Note**: Documentation for the Power App is is still in progress.
+- **Note**: Documentation for the Power App is is still in progress.
 
 ## How It Works
 
