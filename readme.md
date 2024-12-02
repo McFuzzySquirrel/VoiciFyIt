@@ -1,4 +1,4 @@
-# Azure Function for Podscript to Podcast Conversion
+# Azure Function for Podscript to Podcast Conversion (VoiciFyIt)
 
 This Azure Function App converts a podscript (written in SSML - Speech Synthesis Markup Language) into a high-quality audio podcast in MP3 format. It leverages Azure Cognitive Services for speech synthesis and Azure Storage for handling input and output queues and storing the generated audio files. This function can be used by any application or system that sends a well-formed SSML to the relevant `input-queue`
 
