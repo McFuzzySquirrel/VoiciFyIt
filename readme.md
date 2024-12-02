@@ -4,6 +4,8 @@ This Azure Function App converts a podscript (written in SSML - Speech Synthesis
 
 For the Power Platform based front-end, please see [README.MD](https://github.com/McFuzzySquirrel/podcaster_function/blob/all_in_one/Power%20Platform%20Bits/readme.md) in the "Power Platform Bits" directory
 
+**Note**: Documentation for the Power App is is still in progress.
+
 ## How It Works
 
 1. **Trigger**: The function is triggered by messages added to an Azure Storage Queue (`input-queue`).
