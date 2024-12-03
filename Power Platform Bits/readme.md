@@ -27,6 +27,9 @@ Presented to user after selecting “Podcast it!” button to explain that podca
 
 #### Associated Flow: Podcaster – Process Queue
 Executed from when user select “Podcast it!” button. This flow processes messages from a queue, retrieves content from a blob storage, creates a file in SharePoint, and updates its properties with metadata such as title and description.
+
+![image](https://github.com/user-attachments/assets/0a79d144-1498-4b37-9e7c-bfffb719e17a)
+
  
 ### Podcasts Screen
 Allows the users to view and play recent podcasts pulled from a SharePoint list / to download a podcast.
