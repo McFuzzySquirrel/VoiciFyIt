@@ -2,9 +2,15 @@
 ## Podcaster v3 App
 ### Welcome Screen
 This is where you will set the host names, host voices (from Azure Speech Services), the Style they should follow (this is pulled from a list of styles in a SharePoint list, the Title of the podcast and finally a short description of the audience you want to present to.
+
+![image](https://github.com/user-attachments/assets/6f042b84-6f1f-489b-8d2b-0110852407b1)
+
  
 ### Source Content Screen
 This is where the user will select what source they want to created the podcast from, this could be an upload of a PDF or Image, or they can simply copy/paste or write their own content.
+
+![image](https://github.com/user-attachments/assets/0313b71d-60c7-4277-889f-7e5aa1064752)
+
  
 ### Podcast from Text Screen
 If the user selects to copy/paster or type their own content in, they provide the content and then hit the “Script it!” button. This will fire off a workflow that will use all the inputs from the “Welcome Screen” to build a podcast script and present it in in SSML format (that they can edit) in the second text box.
