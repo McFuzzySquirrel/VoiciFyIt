@@ -21,7 +21,9 @@ After checking and modifying the SSML if needed, they then will the select the �
  
 #### Associated Flow: Podcaster – Process SSML – Text
 This Power Automate action takes various pieces of input text from a trigger, maps them to parameters expected by the AI Builder custom prediction model, and then calls the model to generate predictions or insights based on the provided data. This is particularly useful for automating tasks such as generating podcast scripts from structured input data.
- 
+
+![image](https://github.com/user-attachments/assets/1ac6ff91-31eb-4f9e-bef4-6bba37f832cd)
+
 ### Upload Screen
 This where the user can upload a PDF or Image that will be sent to a flow for processing, output of which will be SSML in the text box they can edit before sending it generate audio.
 
@@ -30,9 +32,13 @@ This where the user can upload a PDF or Image that will be sent to a flow for pr
  
 #### Associated Flow: Podcaster – Process SSML from Upoad
 Executed when user selects “Script it!” button. This flow processes a file's content that has been passed from the Power App, recognizes text from it, generates a custom podcast script in SMML using that text with AI Builder, and then creates an item in SharePoint with the generated SSML and the original recognized text.
- 
+
+![image](https://github.com/user-attachments/assets/e2a5715a-01be-4f45-a466-97cc44e43994)
+
 #### Associated Flow: Podcaster – Generate Audio
 Executed from when the user selects “Podcast it!” button. 
+
+![image](https://github.com/user-attachments/assets/df53f7d3-2298-49e2-95f5-111aa44d22b4)
 
 ### Progress Screen
 Presented to user after selecting “Podcast it!” button to explain that podcast audio is in process of being created which is being done by the Podcaster – Process Queue flow.
