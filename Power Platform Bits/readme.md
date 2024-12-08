@@ -57,9 +57,27 @@ Allows the users to view and play recent podcasts pulled from a SharePoint list 
 
 ## Power Automate Flows
 
-## Power Automate Connectors
+### Generate SSML - Upload
+
+### Generate SSML - Text
+
+### Generate Audio
+
+### Process Queue Monitor
 
 ## SharePoint Components
+
+### Recordings Document Library 
+You will need a document library to save the .mp3 files to, the library and is used to display the list of recordings in the Power App. Should have the following columns:
+
+### SSML Transcriptions List
+This list stores the original extracted content, the SSML conversion, the person who submitted it. The reason for this is to provide audit capability. The Following columns are being used:
+
+### Voice Examples List
+This list contains the list of Azure Speech Services voices you want to make available to the end-users to use, it contains the following columns:
+
+### Style Guides List
+This list contains the list of Styles that will guide the hosts on how to behave and are selected from the Power App. The following columns are being used:
 
  
 
