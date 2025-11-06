@@ -1,3 +1,22 @@
+# Exploring Ideas Through Code: One Experiment at a Time
+
+## About These Projects
+
+All of my projects exist for one main reason: **learning through experimentation**.  
+Each repository is a result of me asking questions like:  
+> “Is this possible?”  
+> “I wonder if…?”  
+
+Sometimes they’re attempts to solve real problems I’ve come across, other times they’re just me following curiosity down a rabbit hole.  
+This is my **learning playground**, a space where I test ideas, try new things, and learn by doing.  
+
+I share them here in case they help or inspire someone else.  
+So expect some projects to be **messy**, others **well-structured**, all of them are honest reflections of learning in progress.  
+
+Feel free to **use**, **modify**, or **build on** anything here. 
+
+So here we go:
+
 # Azure Function for Podscript to Podcast Conversion (VoiciFyIt)
 
 This Azure Function App converts a podscript (written in SSML - Speech Synthesis Markup Language) into a high-quality audio podcast in MP3 format. It leverages Azure Cognitive Services for speech synthesis and Azure Storage for handling input and output queues and storing the generated audio files. This function can be used by any application or system that sends a well-formed SSML to the relevant `input-queue`
